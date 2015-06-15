@@ -25,11 +25,11 @@ public class MyLocationListener extends MainActivity implements LocationListener
         String Text1 = "Latitude = "+ location.getLatitude();
         String Text2 = "Longitude = " + location.getLongitude();
         String Text3 = "Current Speed = " + location.getSpeed();
-        TextView txtlat = (TextView)activity.findViewById(R.id.text_lat);
-        TextView txtlon = (TextView)activity.findViewById(R.id.text_lon);
+        //TextView txtlat = (TextView)activity.findViewById(R.id.text_lat);
+        //TextView txtlon = (TextView)activity.findViewById(R.id.text_lon);
         TextView txtspeed = (TextView)activity.findViewById(R.id.text_speed);
-        txtlat.setText(Text1);
-        txtlon.setText(Text2);
+        //txtlat.setText(Text1);
+        //txtlon.setText(Text2);
         txtspeed.setText(Text3);
         //Toast.makeText(context.getApplicationContext(), Text1 + Text2, Toast.LENGTH_SHORT).show();
     }

@@ -16,8 +16,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 
-public class MainActivity extends Activity{
+
+public class MainActivity extends Activity implements OnMapReadyCallback{
 
     DatabaseAdapter adapter;
     public static final String PREFS_NAME = "MyPrefs";
@@ -32,6 +37,17 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Working with Maps
+        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+        GoogleMapOptions googleMapOptions = new GoogleMapOptions();
+        googleMapOptions.mapType(GoogleMap.MAP_TYPE_NORMAL)
+                .compassEnabled(false)
+                .rotateGesturesEnabled(false)
+                .tiltGesturesEnabled(false);
+
+        mapFragment.newInstance(googleMapOptions);
         //First of all define all segments
         initializeValues();
 
@@ -232,5 +248,10 @@ public class MainActivity extends Activity{
             }
         };
         thread.start();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
