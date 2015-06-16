@@ -22,13 +22,15 @@ public class MyLocationListener extends MainActivity implements LocationListener
     }
     @Override
     public void onLocationChanged(Location location) {
-        final double latitude = location.getLatitude();
-        final double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        int speed = (int)(location.getSpeed()*3.6);
+
         String Text1 = "Latitude = "+ location.getLatitude();
         String Text2 = "Longitude = " + location.getLongitude();
-        String Text3 = "Current Speed = " + location.getSpeed();
+        String Text3 = ""+speed;
 
-        TextView txtspeed = (TextView)activity.findViewById(R.id.text_speed);
+        TextView txtspeed = (TextView)activity.findViewById(R.id.curr_speed);
         txtspeed.setText(Text3);
     }
 

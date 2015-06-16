@@ -13,6 +13,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -35,6 +38,9 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
     public coordinates [] demo_road2;
     public coordinates [] road3;
     public coordinates [] road1;
+    public coordinates [] final_road1;
+    public coordinates [] final_road2;
+    public coordinates [] final_road3;
     LocationManager mlocManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         //First of all define all segments
         initializeValues();
 
+/*
         //Shared preference for storing in DB
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         boolean firstStart = settings.getBoolean("firstStart", true);
@@ -73,7 +80,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         //This runs a service in background, which just returns a toast message of Coordinates
         //startService(new Intent(this,LocationService.class));
 
-
+*/
         mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         //For getting the current location
@@ -85,7 +92,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         if (location == null){
             Toast.makeText(this,"Null hai yaar!!",Toast.LENGTH_LONG).show();
         }
-        coordinates [][] all_coords = new coordinates[][]{road1,road3};
+        coordinates [][] all_coords = new coordinates[][]{final_road1,final_road2,final_road3};
         checkForPoint(all_coords);
 
     }
@@ -115,6 +122,30 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
 
     public void initializeValues(){
 
+        //Initialize final road 1: IIM to Helmet
+        final_road1 = new coordinates[9];
+        double final_road1_lat [] = new double[]{23.036691232580402, 23.041459932330607, 23.045152349924148, 23.04594215872767, 23.04594215872767, 23.042634803453275, 23.040857683496885, 23.037599569355585, 23.03625680847981};
+        double final_road1_lon [] = new double[]{72.5366735458374, 72.53900170326233, 72.5417697429657, 72.54228472709656, 72.54321813583374, 72.54091143608093, 72.53970980644226, 72.53803610801697, 72.53738164901733};
+        for(int i=0;i<final_road1_lat.length;i++){
+            final_road1[i] = new coordinates(final_road1_lat[i],final_road1_lon[i]);
+        }
+
+        //Initialize final road 2: Helmet to Himalaya mall
+        final_road2 = new coordinates[15];
+        double final_road2_lat [] = new double[]{23.044811743448253, 23.045206649427644, 23.045295503113447, 23.04562623576205, 23.045507764458897, 23.045680535074506, 23.045764452150703, 23.045799006225703, 23.046114928786057, 23.04602113935329, 23.046075438506538, 23.046001394201234, 23.046060629648732, 23.04602113935329, 23.045201713110064};
+        double final_road2_lon [] = new double[]{72.5424188375473, 72.54138350486755, 72.54098653793335, 72.54022479057312, 72.53957033157349, 72.5356113910675, 72.5322425365448, 72.53194749355316, 72.53197968006134, 72.53351926803589, 72.53593862056732, 72.53843307495117, 72.53996729850769, 72.5408524274826, 72.54266023635864};
+        for(int i=0;i<final_road2_lat.length;i++){
+            final_road2[i] = new coordinates(final_road2_lat[i],final_road2_lon[i]);
+        }
+
+        //Initialize final road 3: Sarkari vasahat road
+        final_road3 = new coordinates[9];
+        double final_road3_lat [] = new double[]{23.046100119932586, 23.043691191427772, 23.040768826883646, 23.038991682311238, 23.038705362381876,23.039041047754797, 23.04319755321853, 23.04570521657293, 23.046327188840063};
+        double final_road3_lon [] = new double[]{72.5324034690857, 72.53241419792175, 72.53254294395447, 72.53262877464294, 72.53233909606934, 72.53185629844666, 72.53187775611877, 72.5318992137909, 72.53206014633179};
+        for(int i=0;i<final_road3_lat.length;i++){
+            final_road3[i] = new coordinates(final_road3_lat[i],final_road3_lon[i]);
+        }
+
         //Initialize road 1
         road1 = new coordinates[6];
         double road1_lat [] = new double[]{23.04047263774957, 23.040440550554298, 23.040420804584166, 23.04029986045397, 23.04033194768277, 23.040371439646172};
@@ -130,7 +161,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         for (int i=0;i<road3_lat.length;i++){
             road3[i] = new coordinates(road3_lat[i],road3_lon[i]);
         }
-        //Initialize demo road 1
+        //Initialize demo road 1: L1
         demo_road1 = new coordinates[16];
         double demo1_lat [] = new double[]{23.040455360029984, 23.0404282093233, 23.040408463351362, 23.040415868091184, 23.040383780882372, 23.040065376626927, 23.039835828906188, 23.039482867669278, 23.038739918267705, 23.038759664484203, 23.039440907181003, 23.039828424134484,23.040322074690103, 23.04032947943467, 23.040351693665915, 23.040368971398813};
         double demo1_lon [] = new double[] {72.53226399421692,72.53107577562332,72.53034889698029,72.5298473238945,72.52977222204208,72.52988755702972,72.52995997667313,72.53001362085342,72.53011018037796,72.53019869327545,72.53010481595993, 72.53003776073456,72.52988487482071,72.53035962581635,72.53137350082397,72.53227472305298};
@@ -139,7 +170,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
             demo_road1[i] = new coordinates(demo1_lat[i],demo1_lon[i]);
         }
 
-        //Initializing demo road 2
+        //Initializing demo road 2: L2
         demo_road2 = new coordinates[20];
         double demo2_lat [] = new double[]{23.0387571962073, 23.03886826862319, 23.03892503893372, 23.038991682311238, 23.03903611121126, 23.039065730469797, 23.039581598178344, 23.039991329017816, 23.040455360029984, 23.040470169504054, 23.039912344856564, 23.03939647841449, 23.038974404401706, 23.03893244375509, 23.038883078271734, 23.03886086379831, 23.038811498288734, 23.03869302099193, 23.038621440907963, 23.038596758111556};
         double demo2_lon [] = new double[]{72.53018528223038,72.53080487251282,72.531199157238,72.53165245056152,72.5320628285408,72.53232568502426,72.53230959177017,72.5322961807251,72.5322613120079,72.53234446048737,72.53237932920456,72.53239005804062,72.53241151571274,72.5323498249054,72.5318643450737,72.53166049718857,72.53124207258224,72.53071904182434,72.53030866384506,72.53021210432053};
@@ -163,7 +194,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
             home[i] = new coordinates(home_lat[i],home_long[i]);
         }
     }
-
+/*
     //For adding road segments to the database
     public void addSegments(){
 
@@ -197,7 +228,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
             long id = adapter.insertData(6,"road3",road3[i].latitude,road3[i].longitude,20);
         }
     }
-
+*/
     //For checking whether the current location falls in the given segment
     public void checkForPoint(final coordinates[][] segment){
 
@@ -210,11 +241,25 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
                     pointInPolygon point = new pointInPolygon();
                     for (int i = 0; i < segment.length; i++) {
                         boolean pointStatus = point.FindPoint(location.getLatitude(), location.getLongitude(), segment[i]);
+                        final String msg;
                         if (pointStatus) {
+                            if(i == 0){
+                                msg = "50";
+                            }else if (i==1){
+                                msg = "N/A";
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        ImageView img = (ImageView)findViewById(R.id.imageView);
+                                        img.setVisibility(View.VISIBLE);
+                                    }
+                                });
+                            }else{
+                                msg = "30";
+                            }
                             MainActivity.this.runOnUiThread(new Runnable() {
                                 public void run() {
-                                    TextView txt_msg = (TextView) findViewById(R.id.text_msg);
-                                    String msg = "You are in speed restricted area";
+                                    TextView txt_msg = (TextView) findViewById(R.id.text_speed_limit);
+                                    //String msg = "40";
                                     txt_msg.setText(msg);
                                     //Toast.makeText(getApplicationContext(), "You are in restricted area", Toast.LENGTH_LONG).show();
                                 }
@@ -225,8 +270,10 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
                                 if(!still_inside){
                                     MainActivity.this.runOnUiThread(new Runnable() {
                                         public void run() {
-                                            TextView txt_msg = (TextView) findViewById(R.id.text_msg);
-                                            String msg = "";
+                                            TextView txt_msg = (TextView) findViewById(R.id.text_speed_limit);
+                                            ImageView img = (ImageView)findViewById(R.id.imageView);
+                                            img.setVisibility(View.INVISIBLE);
+                                            String msg = "N/A";
                                             txt_msg.setText(msg);
                                             //Toast.makeText(getApplicationContext(), "You are in restricted area", Toast.LENGTH_LONG).show();
                                         }
@@ -259,7 +306,9 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         Location location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         googleMap.setMyLocationEnabled(true);
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        googleMap.addMarker(new MarkerOptions().position(latlng));
+        MarkerOptions markerOptions = new MarkerOptions();
+        googleMap.addMarker(new MarkerOptions().position(latlng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.logo)));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
     }
 }
