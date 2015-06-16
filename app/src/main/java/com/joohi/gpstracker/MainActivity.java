@@ -16,10 +16,13 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class MainActivity extends Activity implements OnMapReadyCallback{
@@ -32,6 +35,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
     public coordinates [] demo_road2;
     public coordinates [] road3;
     public coordinates [] road1;
+    LocationManager mlocManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +74,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         //startService(new Intent(this,LocationService.class));
 
 
-        LocationManager mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        mlocManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         //For getting the current location
         MyLocationListener mlocListener = new MyLocationListener(this,this);
@@ -252,6 +256,10 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
+        Location location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        googleMap.setMyLocationEnabled(true);
+        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        googleMap.addMarker(new MarkerOptions().position(latlng));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
     }
 }
