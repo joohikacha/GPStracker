@@ -6,11 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,6 +45,8 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
     public coordinates [] final_road2;
     public coordinates [] final_road3;
     LocationManager mlocManager;
+
+    TextView text_msg,curr_speed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +65,34 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
         mapFragment.newInstance(googleMapOptions);
         //First of all define all segments
         initializeValues();
+
+        curr_speed = (TextView)findViewById(R.id.curr_speed);
+        text_msg = (TextView)findViewById(R.id.text_speed_limit);
+
+        curr_speed.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(!(text_msg.getText().toString().equals("--"))) {
+                    int current_speed = Integer.parseInt(curr_speed.getText().toString());
+                    int speed_limit = Integer.parseInt(text_msg.getText().toString());
+                    if (current_speed > speed_limit) {
+                        curr_speed.setTextColor(Color.RED);
+                    }else{
+                        curr_speed.setTextColor(Color.WHITE);
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
 
 /*
         //Shared preference for storing in DB
@@ -244,9 +277,9 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
                         final String msg;
                         if (pointStatus) {
                             if(i == 0){
-                                msg = "50";
+                                msg = "60";
                             }else if (i==1){
-                                msg = "N/A";
+                                msg = "45";
                                 MainActivity.this.runOnUiThread(new Runnable() {
                                     public void run() {
                                         ImageView img = (ImageView)findViewById(R.id.imageView);
@@ -271,10 +304,12 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
                                     MainActivity.this.runOnUiThread(new Runnable() {
                                         public void run() {
                                             TextView txt_msg = (TextView) findViewById(R.id.text_speed_limit);
-                                            ImageView img = (ImageView)findViewById(R.id.imageView);
+                                            ImageView img = (ImageView) findViewById(R.id.imageView);
+                                            TextView curr_speed = (TextView) findViewById(R.id.curr_speed);
                                             img.setVisibility(View.INVISIBLE);
-                                            String msg = "N/A";
+                                            String msg = "--";
                                             txt_msg.setText(msg);
+                                            curr_speed.setTextColor(Color.WHITE);
                                             //Toast.makeText(getApplicationContext(), "You are in restricted area", Toast.LENGTH_LONG).show();
                                         }
                                     });
@@ -290,11 +325,11 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
                             });
                         }*/
                     }
-                    try {
+                    /*try {
                         Thread.sleep(1000);
                     }catch (InterruptedException e){
                         //Nothing to print
-                    }
+                    }*/
                 }
             }
         };
@@ -305,8 +340,8 @@ public class MainActivity extends Activity implements OnMapReadyCallback{
     public void onMapReady(GoogleMap googleMap) {
         Location location = mlocManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         googleMap.setMyLocationEnabled(true);
-        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
+        //LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng latlng = new LatLng(23.041583, 72.536319);
         googleMap.addMarker(new MarkerOptions().position(latlng)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.logo)));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(15));
